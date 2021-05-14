@@ -13,21 +13,23 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta  # JsonWebトークンに時間を記述するために使用する
 import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
+env = environ.Env()
+env.read_env(os.path.join(BASE_DIR, '.env'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y%y%4yf800p!l)2^7(&dz^!nfvb!(%&l6$(4*509^+3&+2eqjn'
+SECRET_KEY = env('SECRET_EKY')  # 'y%y%4yf800p!l)2^7(&dz^!nfvb!(%&l6$(4*509^+3&+2eqjn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')  # True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -97,12 +99,11 @@ SIMPLE_JWT = {  # SimleJWTをカスタマイズする記述
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': env.db(),  # {
+    # 'ENGINE': 'django.db.backends.sqlite3',
+    # 'NAME': BASE_DIR / 'db.sqlite3',
+    # }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -122,7 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -136,11 +136,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join((BASE_DIR, 'static'))
+STATIC_ROOT = os.path.join((BASE_DIR, 'static'))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # mediaフォルダの位置を指定
 MEDIA_URL = '/media/'  # mediaフォルダのURLを指定
